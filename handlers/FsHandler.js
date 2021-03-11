@@ -1,5 +1,5 @@
-const { appendFile, mkdir } = require('fs').promises;
-const { openSync, closeSync, existsSync } = require('fs');
+const { appendFile } = require('fs').promises;
+const { openSync, closeSync, existsSync, mkdirSync } = require('fs');
 const { join } = require('path');
 
 class FsHandler {
@@ -9,7 +9,7 @@ class FsHandler {
         this.imagesPath = join(this.outputFolder, 'images');
         this.imagesFilename = join(this.outputFolder, 'images.txt');
         await this.verifyPathExists(this.outputFolder);
-        await this.verifyPathExists(this.imagesPath);   
+        await this.verifyPathExists(this.imagesPath);
         await this.verifyPathExists(this.imagesFilename, 'file');
     }
 
@@ -18,7 +18,7 @@ class FsHandler {
     }
 
     createPath(pathToCreate, type = 'folder') {
-        if (type === 'folder') return mkdir(pathToCreate);
+        if (type === 'folder') return mkdirSync(pathToCreate, {recursive: true});
         return this.createEmptyFile(pathToCreate);
     }
 
