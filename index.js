@@ -39,13 +39,31 @@ class PuppeteerVideoRecorder {
         ].join(' ');
     }
 
-    createVideo(ffmpegCommand = '') {
-        const _ffmpegCommand = ffmpegCommand || this.defaultFFMpegCommand;
-        exec(_ffmpegCommand, (error, stdout, stderr) => {
-            if (error) throw new Error(error);
-            console.log(stdout);
-            console.log(stderr);
-        });
+    // createVideo(ffmpegCommand = '') {
+    //     const _ffmpegCommand = ffmpegCommand || this.defaultFFMpegCommand;
+    //     exec(_ffmpegCommand, (error, stdout, stderr) => {
+    //         if (error) throw new Error(error);
+    //         console.log(stdout);
+    //         console.log(stderr);
+    //     });
+    // }
+
+    createVideo() {
+        const _ffmpegCommand = this.defaultFFMpegCommand
+        return new Promise((resolve, reject) => {
+           exec(_ffmpegCommand, (error, stdout, stderr) => {
+             if (error) {
+                reject(error);
+                return;
+            }
+            resolve(stdout)
+           });
+        })
+    }
+
+    getFilePath() {
+        const { videoFilename } = this.fsHandler;
+        return `${videoFilename}`
     }
 }
 
