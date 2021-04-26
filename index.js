@@ -23,8 +23,10 @@ class PuppeteerVideoRecorder {
     }
 
     async stop () {
+        const { imagesFilename } = this.fsHandler;
     	await this.screenshots.stop();
-    	return this.createVideo();
+    	await this.createVideo();
+        return exec(`rm -rf ${imagesFilename}`)
     }
 
     get defaultFFMpegCommand() {
@@ -38,15 +40,6 @@ class PuppeteerVideoRecorder {
             videoFilename
         ].join(' ');
     }
-
-    // createVideo(ffmpegCommand = '') {
-    //     const _ffmpegCommand = ffmpegCommand || this.defaultFFMpegCommand;
-    //     exec(_ffmpegCommand, (error, stdout, stderr) => {
-    //         if (error) throw new Error(error);
-    //         console.log(stdout);
-    //         console.log(stderr);
-    //     });
-    // }
 
     createVideo() {
         const _ffmpegCommand = this.defaultFFMpegCommand
